@@ -4,7 +4,9 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from time import perf_counter
 from datetime import datetime
-from loguru import logger
+from backend.utils.logging import logger
+
+#from loguru import logger
 
 class LoggerMiddleware(BaseHTTPMiddleware):
     async def dispatch(
@@ -24,5 +26,7 @@ class LoggerMiddleware(BaseHTTPMiddleware):
         start = perf_counter()
         response = await call_next(request)
         duration = perf_counter() - start
+        
         logger.info(f"Date: {date} | Parameters: {request.query_params} | Duration: {duration:.4f}s")
+
         return response
